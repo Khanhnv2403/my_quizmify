@@ -1,15 +1,34 @@
+import SignInButton from "@/components/SignInButton";
 import { Button } from "@/components/ui/button";
-import { prisma } from "@/lib/db";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getAuthSession } from "@/lib/nextauth";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getAuthSession();
+  if (session?.user) {
+    return redirect("/dashboard");
+  }
   return (
-    <div>
-      <Button>Hello</Button>
-      <h1>dsfsdf</h1>
-      <h1>dsfsdf3</h1>
-      <h1>dsfsdf4</h1>
-      <h1>dsfsdf5</h1>
-      <h1>dsfsdf6</h1>
+    <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+      <Card className="w-[300px]">
+        <CardHeader>
+          <CardTitle>Welcome to Quizmify</CardTitle>
+          <CardDescription>
+            Quizmify is a quiz app that allows you to create and share quizzes
+            with your friends.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SignInButton text="Sign In with Google" />
+        </CardContent>
+      </Card>
     </div>
   );
 }
