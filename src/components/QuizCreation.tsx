@@ -25,12 +25,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { BookOpen, CopyCheck } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 type Input = z.infer<typeof quizCreationSchema>;
 
 const QuizCreation = (props: Props) => {
+  const router = useRouter();
+  const { mutate: getQuestions, status } = useMutation({
+    mutationFn: async ({ amount, topic, type }: Input) => {
+      const respone = await axios.post("/api/game", {
+        amount,
+        topic,
+        type,
+      });
+      return respone.data;
+    },
+  });
   const form = useForm<Input>({
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
@@ -41,7 +55,22 @@ const QuizCreation = (props: Props) => {
   });
 
   function onSubmit(input: Input) {
-    alert(JSON.stringify(input, null, 2));
+    getQuestions(
+      {
+        amount: input.amount,
+        topic: input.topic,
+        type: input.type,
+      },
+      {
+        onSuccess: ({ gameId }) => {
+          if (form.getValues("type") === "open_ended") {
+            router.push(`/play/open-ended/${gameId}`);
+          } else {
+            router.push(`/play/mcq/${gameId}`);
+          }
+        },
+      }
+    );
   }
 
   form.watch();
@@ -63,7 +92,13 @@ const QuizCreation = (props: Props) => {
                   <FormItem>
                     <FormLabel>Topic</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter a topic" {...field} />
+                      <Input
+                        placeholder="Enter a topic"
+                        {...field}
+                        onChange={(e) => {
+                          form.setValue("topic", e.target.value);
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>Please provide a topic</FormDescription>
                     <FormMessage />
