@@ -33,33 +33,35 @@ const QuestionList = ({ questions }: Props) => {
       <TableBody>
         <>
           {questions.map((question, index) => {
-            <TableRow key={question.id}>
-              <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>
-                {question.question}
-                <br />
-                <br />
-                <span className="font-semibold">{question.answer}</span>
-              </TableCell>
-              {gameType === "mcq" && (
-                <TableCell
-                  className={cn({
-                    "text-green-600": question.isCorrect,
-                    "text-red-600": !question.isCorrect,
-                  })}
-                >
-                  {question.userAnswer}
+            return (
+              <TableRow key={question.id}>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell>
+                  {question.question}
+                  <br />
+                  <br />
+                  <span className="font-semibold">{question.answer}</span>
                 </TableCell>
-              )}
-              {gameType === "open_ended" && (
-                <TableCell>{question.userAnswer}</TableCell>
-              )}
-              {gameType === "open_ended" && (
-                <TableCell className="text-right">
-                  {question.percentageCorrect}
-                </TableCell>
-              )}
-            </TableRow>;
+                {gameType === "mcq" && (
+                  <TableCell
+                    className={cn({
+                      "text-green-600": question.isCorrect,
+                      "text-red-600": !question.isCorrect,
+                    })}
+                  >
+                    {question.userAnswer}
+                  </TableCell>
+                )}
+                {gameType === "open_ended" && (
+                  <TableCell>{question.userAnswer}</TableCell>
+                )}
+                {gameType === "open_ended" && (
+                  <TableCell className="text-right">
+                    {question.percentageCorrect}
+                  </TableCell>
+                )}
+              </TableRow>
+            );
           })}
         </>
       </TableBody>
