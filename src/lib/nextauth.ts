@@ -1,4 +1,8 @@
-import { DefaultSession, NextAuthOptions, getServerSession } from "next-auth";
+import {
+  type DefaultSession,
+  type NextAuthOptions,
+  getServerSession,
+} from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./db";
 import GoogleProvider from "next-auth/providers/google";
@@ -36,9 +40,9 @@ export const authOptions: NextAuthOptions = {
     },
     session: ({ session, token }) => {
       if (token) {
-        (session.user.id = token.id),
-          (session.user.name = token.name),
-          (session.user.email = token.email);
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
         session.user.image = token.picture;
       }
       return session;
