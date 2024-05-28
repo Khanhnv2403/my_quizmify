@@ -49,6 +49,33 @@ export const authOptions: NextAuthOptions = {
   //   },
   // },
   // adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
+  secret: "fghsfghgfhgsfh",
+  callbacks: {
+    jwt: async ({ token }) => {
+      const db_user = await prisma.user.findFirst({
+        where: {
+          email: token?.email,
+        },
+      });
+      if (db_user) {
+        token.id = db_user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+      return session;
+    },
+  },
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
