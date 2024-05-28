@@ -20,13 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta
-          http-equiv="Permissions-Policy"
-          content="interest-cohort=(), document-write=(), parallel-worker=()"
-        />
-        <meta name="referrer" content="strict-origin-when-cross-origin" />
-      </head>
       <body className={cn(inter.className, `antialiased min-h-screen !pt-16`)}>
         <Providers>
           <Navbar />
