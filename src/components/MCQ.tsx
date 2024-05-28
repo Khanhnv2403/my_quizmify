@@ -202,7 +202,7 @@ const MCQ = ({ game }: Props) => {
           }}
         >
           {status === "pending" && (
-            <Loader2 className="w-4 h-4  mr-2 animated-spn" />
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
           )}
           Next <ChevronRight className="w-4 h-4 ml-2" />
         </Button>
