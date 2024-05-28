@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: "fghsfghgfhgsfh",
+  // secret: "fghsfghgfhgsfh",
   // callbacks: {
   //   jwt: async ({ token }) => {
   //     const db_user = await prisma.user.findFirst({
